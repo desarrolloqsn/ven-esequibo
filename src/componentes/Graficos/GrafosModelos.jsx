@@ -23,13 +23,13 @@ export default function GrafosModelos(){
  const [fechas, setFechas] = useState(jsonFechas.fechas)
  const [filtroFecha, setFiltroFecha] = useState(fechas[0])
 
- const opciones = fechas
- .filter((fecha, index) => index > fechas.length - 4) // Filtra las últimas 3 fechas
- .map((fecha, index) => (
-   <Select.Option key={index} value={fecha}>
-     {fecha}
-   </Select.Option>
- ));
+ const opciones = fechas.slice(0,-1).map((fecha, index) => {
+  return (
+    <Select.Option key={index} value={fecha}>
+      {fecha}
+    </Select.Option>
+  );
+});
 
  const handleFiltroFechaChange = (valor) => {
    setFiltroFecha(valor);
@@ -42,7 +42,7 @@ export default function GrafosModelos(){
   return (
     <div className="fondo-grafo">
     <div className="card-body">
-  
+   
    <Select placeholder="Fechas" className='fechas-grafos' onChange={handleFiltroFechaChange} defaultValue={filtroFecha}>
       {opciones}
     </Select>
@@ -86,7 +86,6 @@ export default function GrafosModelos(){
       <img src={contcambio} className='imagen-grafo-modelos' />
     </div>
     </a>
-    
     </Tooltip>
     </div>
     <div className='grafo-video-modelos'>

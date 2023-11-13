@@ -583,7 +583,7 @@ const disabledDate = current => {
 
   return (
     <div>
-    <div className='nombreDashboard'>VEN - Referendo Guyana - TW{modeloSinEspacios ? `- ${modeloSinEspacios}` : null}</div>
+    <div className='nombreDashboard'>Análisis - VEN - Nicolás Maduro - TW {modeloSinEspacios ? `- ${modeloSinEspacios}` : null}</div>
     <div className='contenedor-filtros'>
      <div className='boton-informe'>
      <Tooltip placement="top" title='Generar informe' >
@@ -592,7 +592,7 @@ const disabledDate = current => {
     </div>
    
     <div className='filtro-texto'>
-
+    
     
     <DatePicker.RangePicker
         name="dias"

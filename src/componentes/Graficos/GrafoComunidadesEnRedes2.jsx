@@ -1,31 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Network } from 'vis-network';
-import { DataSet } from 'vis-data';
-import gif from './../../imagenes/Features-of-Big-data-analytics.gif'
-import { Progress } from 'antd';
 import './Graficos.css'
 import { Collapse, Tooltip, Button, Select } from 'antd';
 import { Table } from 'antd';
 import video from './../../imagenes/ComunidadesRedes.mp4'
 import videoTablas from './../../imagenes/TablaInfluenciadores.mp4'
 //FILTRO FECHAS
-import json from './../../datos/datos_globales_grafo_comunidades.json'
 import jsonFechas from './../../datos/rango_fechas.json'
-import tabla1 from './../../datos/datos_globales_influencers_destacados.json'
-import tabla2 from './../../datos/datos_globales_influencers_claves.json'
-import tabla3 from './../../datos/datos_globales_influencers_eficientes.json'
-import tabla4 from './../../datos/datos_globales_influencers_alto_impacto.json'
-import imagen from './../../imagenes/grafo_comunidades-2023-06-19-2023-06-19.PNG'
+import tabla1 from '../../datos/datos_globales_influencers_destacados_menos_gob.json'
+import tabla2 from '../../datos/datos_globales_influencers_claves_menos_gob.json'
+import tabla3 from '../../datos/datos_globales_influencers_eficientes_menos_gob.json'
+import tabla4 from '../../datos/datos_globales_influencers_alto_impacto_menos_gob.json'
+import imagen from './../../imagenes/grafo_comunidades_menos_gob-2023-06-17-2023-06-17.PNG'
 //FIN FILTRO FECHAS
-import {IoOpenOutline} from 'react-icons/io5'
-import { Link } from 'react-router-dom';
 
-const { Panel } = Collapse;
-const text = `
-Hashtags más utilizados en el conjunto de publicaciones o mensajes analizados. Representación gráfica del conjunto de usuarios y sus conexiones. Permite identificar las comunidades de usuarios más importantes y cómo se relacionan entre sí las diferentes comunidades. Cada color representa una comunidad.`;
-
-export default function GrafoComunidadesEnRedes(){
+export default function GrafoComunidadesEnRedesMenosRelevantes(){
 
   
 
@@ -52,6 +41,7 @@ export default function GrafoComunidadesEnRedes(){
 useEffect(() => {
   actualizarDatosTablas();
 }, [filtroFecha]);
+
 
 
 
@@ -120,12 +110,6 @@ const opciones = fechas.slice(0, -1).map((fecha, index) => {
       sorter: (a, b) => a.Centralidad - b.Centralidad,
       width: '200%',
     },
-    {
-      title: 'Seguidores',
-      dataIndex: 'Seguidores',
-      sorter: (a, b) => a.Seguidores - b.Seguidores,
-      width: '150%',
-    }
 
    
   ];
@@ -247,7 +231,7 @@ const opciones = fechas.slice(0, -1).map((fecha, index) => {
     
     <div className='carta video-texto2 scrollable-card'> 
     <Tooltip title="Click para ver el grafo">
-    <a href={`https://qsngrafos.vercel.app/comunidades/maduro/grafo_comunidades-${filtroFecha}.html`} target="_blank">
+    <a href={`https://qsngrafos.vercel.app/comunidades/maduro/grafo_comunidades_menos_gob-${filtroFecha}.html`} target="_blank">
     <div className='video-explicativo cartaGrafo'>
       <img src={imagen} className='imagen-grafo' />
     </div>
@@ -267,7 +251,7 @@ Las conexiones cercanas a nodos importantes se acortan, como si fueran líneas m
 
     
     </div>
-          <div className='contenedorTablasGrafo' style={{display:displayGrafoComunidades}}>
+    <div className='contenedorTablasGrafo' style={{display:displayGrafoComunidades}}>
           {/*VIDEO Y EXPLICACIÓN*/}
           <div className='video-texto2 carta scrollable-card'>
             <video src={videoTablas} autoplay muted loop type="video/mp4" controls className="video-explicativo-tabla cartaGrafo" ></video>
@@ -323,12 +307,9 @@ Las conexiones cercanas a nodos importantes se acortan, como si fueran líneas m
           </div>
 
           </div> 
-          </div>
+      </div>
 
 
-    
-   
-    
     </div>
 
      

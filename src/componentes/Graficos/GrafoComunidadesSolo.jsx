@@ -46,15 +46,21 @@ export default function GrafoComunidadesEnRedes(){
     "AltoImpacto": tabla4[filtroFecha]
   });
 };
+useEffect(() => {
+  actualizarDatosTablas();
+}, [filtroFecha]);
 
-const opciones = fechas
- .filter((fecha, index) => index > fechas.length - 4) // Filtra las últimas 3 fechas
- .map((fecha, index) => (
-   <Select.Option key={index} value={fecha}>
-     {fecha}
-   </Select.Option>
- ));
 
+
+
+
+ const opciones = fechas.slice(0, -1).map((fecha, index) => {
+   return (
+     <Select.Option key={index} value={fecha}>
+       {fecha}
+     </Select.Option>
+   );
+ });
 
  const handleFiltroFechaChange = (valor) => {
    setFiltroFecha(valor);
@@ -277,6 +283,8 @@ const edges = new DataSet(json[filtroFecha][1])
   return (
     <div className="fondo-grafo">
     <div className="card-body-contenedor-grafo">
+
+
      {/*FILTRO FECHAS*/}
      <Select placeholder="Fechas" className='fechas-grafos' onChange={handleFiltroFechaChange} defaultValue={filtroFecha}>
       {opciones}
