@@ -595,15 +595,18 @@ const disabledDate = current => {
 
     
     <DatePicker.RangePicker
-        name="dias"
-        placeholder={['Día Inicio', 'Día Fin']}
-        allowClear={false}
-        onChange={handleFechaChange}
-        defaultValue={[dayjs(initialValues[1], dateFormat), dayjs(initialValues[1], dateFormat)]}
-        format={dateFormat}
-        disabledDate={disabledDate}  // Propiedad para deshabilitar fechas específicas
-        className="selectores-dash-eventos"
-      />
+  name="dias"
+  placeholder={['Día Inicio', 'Día Fin']}
+  allowClear={false}
+  onChange={handleFechaChange}
+  defaultValue={[
+    dayjs(initialValues[1], dateFormat),
+    dayjs(initialValues[1], dateFormat)
+  ]}
+  format={dateFormat}
+  disabledDate={() => false}  // Permitir selección de cualquier fecha
+  className="selectores-dash-eventos"
+/>
       <div className='filtro-texto-hora'>
     
       <TimePicker.RangePicker
