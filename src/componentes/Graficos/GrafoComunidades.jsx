@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Graficos.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import moment from 'moment'
 import { Collapse, Tooltip, Button, Select} from 'antd';
 import video from './../../imagenes/InteraccionUsuariosInfluencia.mp4'
 import imagen from './../../imagenes/grafo_hashtags_menciones-2023-06-18-2023-06-18.PNG'
@@ -14,18 +14,22 @@ export default function GraphComunidades(){
 
 
 // FILTRO FECHAS
-const [fechas, setFechas] = useState(jsonFechas.fechas)
+const [fechas, setFechas] = useState([
+  moment().format('YYYY-MM-DD'),
+  moment().subtract(1, 'days').format('YYYY-MM-DD'),
+  moment().subtract(2, 'days').format('YYYY-MM-DD'),
+]);
 console.log(jsonFechas)
 const [filtroFecha, setFiltroFecha] = useState(fechas[0])
 
-const opciones = fechas.slice(0, -1).map((fecha, index) => {
+const opciones = fechas.slice(-3).map((fecha, index) => {
+  const fechaCorta = moment(fecha).format('YYYY-MM-DD');
   return (
     <Select.Option key={index} value={fecha}>
-      {fecha}
+      {fechaCorta}
     </Select.Option>
   );
 });
-
 const handleFiltroFechaChange = (valor) => {
   setFiltroFecha(valor);
   console.log(valor)
