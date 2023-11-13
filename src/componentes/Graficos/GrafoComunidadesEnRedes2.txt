@@ -193,7 +193,6 @@ const opciones = fechas
   return (
     <div className="fondo-grafo">
     <div className="card-body">
-  
      {/*FILTRO FECHAS*/}
      <Select placeholder="Fechas" className='fechas-grafos' onChange={handleFiltroFechaChange} defaultValue={filtroFecha}>
       {opciones}
