@@ -42,18 +42,13 @@ useEffect(() => {
   actualizarDatosTablas();
 }, [filtroFecha]);
 
-
-
-
-
-const opciones = fechas.slice(0, -1).map((fecha, index) => {
-  return (
-    <Select.Option key={index} value={fecha}>
-      {fecha}
-    </Select.Option>
-  );
-});
-
+const opciones = fechas
+.filter((fecha, index) => index > fechas.length - 4) // Filtra las últimas 3 fechas
+.map((fecha, index) => (
+  <Select.Option key={index} value={fecha}>
+    {fecha}
+  </Select.Option>
+));
  const handleFiltroFechaChange = (valor) => {
    setFiltroFecha(valor);
    console.log(valor)
@@ -64,10 +59,6 @@ const opciones = fechas.slice(0, -1).map((fecha, index) => {
     setDisplay(!display)
   }
   
-
- 
-
-
   useEffect(() => {
     window.addEventListener('error', e => {
         if (e.message === 'ResizeObserver loop limit exceeded') {
@@ -86,8 +77,6 @@ const opciones = fechas.slice(0, -1).map((fecha, index) => {
         }
     });
 }, []);
-
-
 
   const columns1 = [
     {
@@ -110,15 +99,11 @@ const opciones = fechas.slice(0, -1).map((fecha, index) => {
       sorter: (a, b) => a.Centralidad - b.Centralidad,
       width: '200%',
     },
-
    
   ];
-
   const onChange1 = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
-
-
   const columns2 = [
     {
       title: 'Influencer',
@@ -205,33 +190,19 @@ const opciones = fechas.slice(0, -1).map((fecha, index) => {
     window.open(url, '_blank');
   };
 
-
-  
   return (
     <div className="fondo-grafo">
     <div className="card-body">
-
-
+  
      {/*FILTRO FECHAS*/}
      <Select placeholder="Fechas" className='fechas-grafos' onChange={handleFiltroFechaChange} defaultValue={filtroFecha}>
       {opciones}
     </Select>
-
-
-
-  
-  
- 
-    
-
-
-
-   
     <div>
     
     <div className='carta video-texto2 scrollable-card'> 
     <Tooltip title="Click para ver el grafo">
-    <a href={`https://qsngrafos.vercel.app/comunidades/maduro/grafo_comunidades_menos_gob-${filtroFecha}.html`} target="_blank">
+    <a href={`https://qsngrafos.vercel.app/comunidades/esequibo/grafo_comunidades_menos_gob-${filtroFecha}.html`} target="_blank">
     <div className='video-explicativo cartaGrafo'>
       <img src={imagen} className='imagen-grafo' />
     </div>
@@ -268,10 +239,6 @@ Las conexiones cercanas a nodos importantes se acortan, como si fueran líneas m
             
             </div>
             </div>
-
-
-
-
           <div className='Tablas'>{/*TABLAS*/}
           <div>
           <div className='subtitulo-carta'>Influencers Destacados</div>
