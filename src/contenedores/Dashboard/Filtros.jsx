@@ -592,7 +592,7 @@ const disabledDate = current => {
     </div>
    
     <div className='filtro-texto'>
-    
+
     
     <DatePicker.RangePicker
         name="dias"
