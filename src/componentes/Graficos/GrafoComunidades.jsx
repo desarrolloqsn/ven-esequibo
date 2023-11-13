@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Graficos.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import moment from 'moment'
+
 import { Collapse, Tooltip, Button, Select} from 'antd';
 import video from './../../imagenes/InteraccionUsuariosInfluencia.mp4'
 import imagen from './../../imagenes/grafo_hashtags_menciones-2023-06-18-2023-06-18.PNG'
@@ -14,22 +14,18 @@ export default function GraphComunidades(){
 
 
 // FILTRO FECHAS
-const [fechas, setFechas] = useState([
-  moment().format('YYYY-MM-DD'),
-  moment().subtract(1, 'days').format('YYYY-MM-DD'),
-  moment().subtract(2, 'days').format('YYYY-MM-DD'),
-]);
+const [fechas, setFechas] = useState(jsonFechas.fechas)
 console.log(jsonFechas)
 const [filtroFecha, setFiltroFecha] = useState(fechas[0])
 
-const opciones = fechas.slice(-3).map((fecha, index) => {
-  const fechaCorta = moment(fecha).format('YYYY-MM-DD');
-  return (
-    <Select.Option key={index} value={fecha}>
-      {fechaCorta}
-    </Select.Option>
-  );
-});
+const opciones = fechas
+.filter((fecha, index) => index > fechas.length - 4) // Filtra las últimas 3 fechas
+.map((fecha, index) => (
+  <Select.Option key={index} value={fecha}>
+    {fecha}
+  </Select.Option>
+));
+
 const handleFiltroFechaChange = (valor) => {
   setFiltroFecha(valor);
   console.log(valor)
@@ -42,7 +38,6 @@ const handleFiltroFechaChange = (valor) => {
     <div className="fondo-grafo">
     <div className="card-body">
 
-
     {/* FILTRO FECHAS */}
     <Select placeholder="Fechas" className='fechas-grafos' onChange={handleFiltroFechaChange} defaultValue={filtroFecha}>
       {opciones}
@@ -53,7 +48,7 @@ const handleFiltroFechaChange = (valor) => {
     <div className='grafo-video' >
   
     <Tooltip title="Click para ver el grafo">
-    <a href={`https://qsngrafos.vercel.app/hasgtags-menciones/maduro/grafo_hashtags_menciones-${filtroFecha}.html`} target="_blank">
+    <a href={`https://qsngrafos.vercel.app/hasgtags-menciones/esequibo/grafo_hashtags_menciones-${filtroFecha}.html`} target="_blank">
     <div className='video-explicativo cartaGrafo'>
       <img src={imagen} className='imagen-grafo' />
     </div>
