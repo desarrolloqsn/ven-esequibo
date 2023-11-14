@@ -6,7 +6,7 @@ import {HiOutlineDocumentReport} from 'react-icons/hi'
 import { Checkbox, Col, Row } from 'antd';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {  filtrarDatos,guardarHoras } from '../../redux/actions';
+import {  filtrarDatos, filtrarDatosPorTitulo, filtrarDatosPorTituloNoContiene, filtrarDatosSubserie, filtrarTweets, guardarFechas, guardarHoras } from '../../redux/actions';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { AiOutlineSearch, AiFillInfoCircle } from "react-icons/ai";
@@ -40,10 +40,6 @@ export default function Filtros() {
     const currentUrl = location.pathname;
     const subUrl = currentUrl.startsWith('/dashboard/') ? currentUrl.substring('/dashboard/'.length) : '';
     const modeloSinEspacios = decodeURIComponent(subUrl.replace(/\+/g, " "));
-    const [palabrasInput,setpalabrasInput] = useState([])
-    const [inputValues, setInputValues] = useState({});
-
-
      const tweetsFiltrados = datos.filter(tweet => {
       const propiedadModelo = tweet[modeloSinEspacios];
       return Array.isArray(propiedadModelo) && propiedadModelo.length > 0;
@@ -170,10 +166,8 @@ const treeData = buildTree(categoriasModelosSelector);
       modelo:[],
       categoria: [],
       anidados: false,
-      datos: datos
+      datos: datosFiltrados
     });
-
-
 
     useEffect(() => {
 
@@ -185,69 +179,38 @@ const treeData = buildTree(categoriasModelosSelector);
     }, [modeloSinEspacios]);
   
    
-    const handleFiltrarEventos = (value, key) => {
+    const handleFiltrarEventos = (value) => {
       if (value.trim() === "") {
         // El valor está vacío, puedes mostrar un mensaje de error o realizar alguna acción apropiada.
         return;
       }
-      const updatedInputValues = {
-        ...inputValues,
-        [key]: {
-          condicion: filtroCumple === 'Eventos que cumplen' ? 'Eventos que cumplen' : "Eventos que no cumplen",
-          valor: value,
-        },
-      };
     
-      setInputValues(updatedInputValues);
-      
-      // console.log(value, key);
-      
-      const updatedPalabrasInput = {
-        ...palabrasInput,
-        [`input${key}`]: {
-          condicion: filtroCumple === 'Eventos que cumplen' ? 'Eventos que cumplen' : "Eventos que no cumplen",
-          valor: value
-        }
-      };
+      // Obtener las palabras individuales del valor
+      const palabras = value.split(" ");
     
-      setpalabrasInput(updatedPalabrasInput);
+      // Eliminar palabras vacías y duplicadas
+      const palabrasUnicas = [...new Set(palabras.filter(palabra => palabra !== ""))];
     
-      const cumplenArray = Object.keys(updatedPalabrasInput).reduce((arr, inputKey) => {
-        if (updatedPalabrasInput[inputKey].condicion === 'Eventos que cumplen') {
-          arr.push(updatedPalabrasInput[inputKey].valor);
-        }
-        return arr;
-      }, []);
-    
-      const palabraArray = cumplenArray.length > 0 ? cumplenArray : [];
+      // Realizar alguna acción con las palabras únicas
+      // console.log(palabrasUnicas);
     
       if (filtroCumple === 'Eventos que cumplen') {
         setFiltros((prevFiltros) => ({
           ...prevFiltros,
-          palabra: palabraArray,
-          datos: datos
+          palabra: filtros.palabra.concat(palabrasUnicas),
+          datos:datosFiltrados
         }));
-
       } else if (filtroCumple === 'Eventos que no cumplen') {
-        const cumplenArray = Object.keys(palabrasInput).reduce((arr, key) => {
-          if (palabrasInput[key].condicion === 'Eventos que no cumplen') {
-            arr.push(palabrasInput[key].valor);
-          }
-          return arr;
-        }, []);
-      
-        const palabraArray = cumplenArray.length > 0 ? cumplenArray : [value];
-      
         setFiltros((prevFiltros) => ({
           ...prevFiltros,
-          sinpalabra: prevFiltros.sinpalabra.concat(palabraArray),
-          datos: datos
+          sinpalabra: filtros.sinpalabra.concat(palabrasUnicas),
+          datos:datosFiltrados
         }));
       } else {
         setFiltros((prevFiltros) => ({
           ...prevFiltros,
-          palabra: filtros.palabra.concat(value),
-          datos:datos
+          palabra: filtros.palabra.concat(palabrasUnicas),
+          datos:datosFiltrados
         }));
       }
     };
@@ -332,17 +295,14 @@ const treeData = buildTree(categoriasModelosSelector);
       
      
     const renderCode = () => {
-      let contadorKey = 0; 
-        return duplications.map((duplication) => {
-          contadorKey++; 
-          return (
-          <div key={contadorKey} className="filtro-texto">
+        return duplications.map((duplication) => (
+          <div key={duplication.key} className="filtro-texto">
             <Select placeholder="Filtro por palabra/autor/hashtag/mención" className="selectores-dash-eventos"  allowClear onChange={handleFiltroCumpleChange}>
               <Select.Option value="Eventos que cumplen" allowClear>Eventos que cumplen</Select.Option>
               <Select.Option value="Eventos que no cumplen" allowClear>Eventos que no cumplen</Select.Option>
             </Select>
             <Tooltip placement="top" title='Eliminar filtro' >
-            <Button type="primary" shape="circle" onClick={(e) => handleButtonClickDelete(contadorKey, e)} className='subtitulo-boton'>
+            <Button type="primary" shape="circle" onClick={(e) => handleButtonClickDelete(duplication.key, e)} className='subtitulo-boton'>
               -
             </Button>
             </Tooltip>
@@ -352,25 +312,9 @@ const treeData = buildTree(categoriasModelosSelector);
               <Select.Option value="Hashtags" allowClear>Hashtags</Select.Option>
               <Select.Option value="Menciones" allowClear>Menciones</Select.Option>
             </Select> */}
-          <Input
-          placeholder="Texto/Autor/Hashtag/Mención"
-          allowClear
-          onBlur={(e) => handleFiltrarEventos(e.target.value, contadorKey)}
-          onChange={(e) => handleInputChange(contadorKey, e.target.value)}
-          value={inputValues[contadorKey] ? inputValues[contadorKey].valor : ''}
-        />
- 
+           <Input placeholder="Texto/Autor/Hashtag/Mención" allowClear onBlur={(e) => handleFiltrarEventos(e.target.value)}></Input>
           </div>
-        )});
-        
-      };
-
-
-      const handleInputChange = (key, value) => {
-        setInputValues(prevInputValues => ({
-          ...prevInputValues,
-          [key]:{ valor: value }
-        }));
+        ));
       };
 
 
@@ -545,45 +489,60 @@ const disabledDate = current => {
 
 
   function sendFilter(){
-    if (filtros.horaInicio === "" && filtros.horaFin === "") {
-      filtros.horaInicio = '00:00';
-      filtros.horaFin = '23:59';
+    if(filtros.horaInicio === "" && filtros.horaFin === ""){
+      filtros.horaInicio = '00:00'
+      filtros.horaFin = '23:59'
     }
-  
-    const valores = {
-      serie: filtros.serie,
+    if(filtros.palabra.length < 1){
+    let valores =   
+    {serie: filtros.serie,
+    subserie: filtros.subserie,
+    palabra: [],
+    sinpalabra: filtros.sinpalabra,
+    fechaInicio: filtros.fechaInicio,
+    fechaFin: filtros.fechaFin,
+    horaInicio: filtros.horaInicio,
+    horaFin: filtros.horaFin,
+    polaridad: filtros.polaridad,
+    modelo:filtros.modelo,
+    categoria: filtros.categoria,
+    anidados: filtros.anidados,
+    datos: filtros.datos
+    }
+    // console.log(valores)
+    dispatch(filtrarDatos(valores));
+    }
+    if(filtros.sinpalabra.length < 1){
+      let valores =   
+      {serie: filtros.serie,
       subserie: filtros.subserie,
-      palabra: [],
+      palabra: filtros.palabra,
       sinpalabra: [],
       fechaInicio: filtros.fechaInicio,
       fechaFin: filtros.fechaFin,
       horaInicio: filtros.horaInicio,
       horaFin: filtros.horaFin,
       polaridad: filtros.polaridad,
-      modelo: filtros.modelo,
+      modelo:filtros.modelo,
       categoria: filtros.categoria,
       anidados: filtros.anidados,
-     datos:datos
-    };
-  
-    // Agregar los valores de inputValues a los filtros
-    for (const key in inputValues) {
-      if (inputValues[key].condicion === 'Eventos que cumplen') {
-        valores.palabra.push(inputValues[key].valor);
-      } else if (inputValues[key].condicion === 'Eventos que no cumplen') {
-        valores.sinpalabra.push(inputValues[key].valor);
+      datos: filtros.datos
       }
+      // console.log(valores)
+      dispatch(filtrarDatos(valores));
     }
-    // console.log(inputValues)
-    // console.log(valores);
-    // console.log(filtros.palabra,filtros.sinpalabra)
-    dispatch(filtrarDatos(valores));
+    // console.log(filtros.palabra)
+    dispatch(filtrarDatos(filtros));
+    setFiltros(prevFiltros => ({
+      ...prevFiltros,
+      palabra:[],
+      sinpalabra:[]
+    }));
+  
   }
-
-
   return (
     <div>
-    <div className='nombreDashboard'>VEN - Referendo Guyana - TW{modeloSinEspacios ? `- ${modeloSinEspacios}` : null}</div>
+    <div className='nombreDashboard'>Análisis - Lanus - TW {modeloSinEspacios ? `- ${modeloSinEspacios}` : null}</div>
     <div className='contenedor-filtros'>
      <div className='boton-informe'>
      <Tooltip placement="top" title='Generar informe' >
@@ -592,21 +551,18 @@ const disabledDate = current => {
     </div>
    
     <div className='filtro-texto'>
-
+    
     
     <DatePicker.RangePicker
-  name="dias"
-  placeholder={['Día Inicio', 'Día Fin']}
-  allowClear={false}
-  onChange={handleFechaChange}
-  defaultValue={[
-    dayjs(initialValues[1], dateFormat),
-    dayjs(initialValues[1], dateFormat)
-  ]}
-  format={dateFormat}
-  disabledDate={() => false}  // Permitir selección de cualquier fecha
-  className="selectores-dash-eventos"
-/>
+        name="dias"
+        placeholder={['Día Inicio', 'Día Fin']}
+        allowClear={false}
+        onChange={handleFechaChange}
+        defaultValue={[dayjs(initialValues[0], dateFormat), dayjs(initialValues[1], dateFormat)]}
+        format={dateFormat}
+        disabledDate={disabledDate}  // Propiedad para deshabilitar fechas específicas
+        className="selectores-dash-eventos"
+      />
       <div className='filtro-texto-hora'>
     
       <TimePicker.RangePicker
@@ -715,19 +671,13 @@ const disabledDate = current => {
      </Button>
      </Tooltip> 
     
-     <Input
-        placeholder="Texto/Autor/Hashtag/Mención"
-        allowClear
-        onBlur={(e) => handleFiltrarEventos(e.target.value, 0)}
-        onChange={(e) => handleInputChange(0, e.target.value)}
-        value={inputValues[0] ? inputValues[0].valor : ''}
-      /> 
+     
+     <Input placeholder="Texto/Autor/Hashtag/Mención" allowClear onBlur={(e) => handleFiltrarEventos(e.target.value)}></Input>
 
      </div> 
 
      
-
-    {renderCode()} 
+     {renderCode()} 
     <Checkbox onChange={onChangeCheck}>Añadir filtro con datos anidados</Checkbox>
     <Button type='primary' onClick={sendFilter} className='subtitulo-boton'>Filtrar</Button>
    </div>
