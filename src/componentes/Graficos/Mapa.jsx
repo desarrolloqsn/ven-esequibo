@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import "leaflet/dist/leaflet.css"; 
+import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useSelector } from "react-redux";
 import { Select } from "antd";
@@ -9,7 +9,7 @@ import { saveAs } from 'file-saver';
 import { write, utils } from 'xlsx';
 import { Button, Tooltip } from 'antd';
 import './../Tabla/Carta.css';
-import '../../datos/gdf_json_data.json';
+
 const { Option } = Select;
 
 const Mapa = () => {
