@@ -6,7 +6,7 @@ import { Select } from "antd";
 import './Graficos.css';
 import { HiDocumentDownload } from 'react-icons/hi'
 import { saveAs } from 'file-saver';
-import { write, utils } from 'xlsx';
+import { write, utils } from 'xlsx'; 
 import { Button, Tooltip } from 'antd';
 import './../Tabla/Carta.css';
 
