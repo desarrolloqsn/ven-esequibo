@@ -259,8 +259,10 @@ justify-content: center;
 }
 
 .fechas-grafos{
-    width: 15%;
+    width: 13%;
     margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .bigramas-trigramas{
@@ -299,6 +301,18 @@ justify-content: center;
 .texto-explicativo-fechas{
     height: 23rem;
     justify-content: start;
+}
+.flex-container{
+    display:flex
+}
+.download{
+
+    margin-left:15px;
+    background-color: #f97000;
+}
+.download:hover{
+
+    background-color: #1e3236 !important;
 }
 
 @media (max-width: 768px) {

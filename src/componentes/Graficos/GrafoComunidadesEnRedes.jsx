@@ -5,7 +5,7 @@ import { DataSet } from 'vis-data';
 import gif from './../../imagenes/Features-of-Big-data-analytics.gif'
 import { Progress } from 'antd';
 import './Graficos.css'
-import { Collapse, Tooltip, Button, Select } from 'antd';
+import { Collapse, Tooltip, Button, Select, Divider,Flex,Radio } from 'antd';
 import { Table } from 'antd';
 import video from './../../imagenes/ComunidadesRedes.mp4'
 import videoTablas from './../../imagenes/TablaInfluenciadores.mp4'
@@ -20,12 +20,52 @@ import imagen from './../../imagenes/grafo_comunidades-2023-06-19-2023-06-19.PNG
 //FIN FILTRO FECHAS
 import {IoOpenOutline} from 'react-icons/io5'
 import { Link } from 'react-router-dom';
+import {DownloadOutlined} from '@ant-design/icons';
+import JSZip from 'jszip/dist/jszip.min.js';
+
+
+
+
 
 const { Panel } = Collapse;
 const text = `
 Hashtags más utilizados en el conjunto de publicaciones o mensajes analizados. Representación gráfica del conjunto de usuarios y sus conexiones. Permite identificar las comunidades de usuarios más importantes y cómo se relacionan entre sí las diferentes comunidades. Cada color representa una comunidad.`;
 
-export default function GrafoComunidadesEnRedes(){
+// const isValidDate = (dateString) => {
+//   const regex = /^\d{4}-\d{2}-\d{2}-\d{4}-\d{2}-\d{2}$/;
+//   return regex.test(dateString);
+// };
+
+export default function GrafoComunidadesEnRedes() {
+
+  const [opcionSeleccionada, setOpcionSeleccionada] = useState('');
+  const handleFiltroFechaChange = (value) => {
+    setFiltroFecha(value);
+    setOpcionSeleccionada(value);
+  };
+  const nombreArchivo = `Grafo-comunidades-${opcionSeleccionada}.pdf`;
+
+  const descargarImagen = async () => {
+    const zip = new JSZip();
+    // Agregar archivos al ZIP
+    zip.file(`${nombreArchivo}`, 'Contenido del archivo 1');
+console.log (nombreArchivo)    
+
+    // Generar el archivo ZIP
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+
+    // Crear un enlace y descargar el archivo ZIP
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(zipBlob);
+    link.download = 'nombre_archivo.zip';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+ 
+ 
+ 
+ 
   const [displayGrafoComunidades, setdisplayGrafoComunidades] = useState('noflexne');
   const [display, setDisplay] = useState(true)
  //FILTRO FECHAS
@@ -58,10 +98,7 @@ const opciones = fechas
   </Select.Option>
 ));
 
- const handleFiltroFechaChange = (valor) => {
-   setFiltroFecha(valor);
-   console.log(valor)
- };
+
  // FIN FILTRO FECHAS
 
   function handleDisplay(){
@@ -201,15 +238,25 @@ const opciones = fechas
     window.open(url, '_blank');
   };
 
+
+
   return (
     <div className="fondo-grafo">
     <div className="card-body">
       
      {/*FILTRO FECHAS*/}
+     <div className='flex-container'>
      <Select placeholder="Fechas" className='fechas-grafos' onChange={handleFiltroFechaChange} defaultValue={filtroFecha}>
-      {opciones}
-    </Select>
-
+  {opciones}
+</Select>
+         <Flex gap="small" wrap="wrap">
+         <Tooltip title="Click para descargar el grafo">
+         <Button type="primary" shape="circle" icon={<DownloadOutlined />} className='download' onClick={descargarImagen} />
+           
+     
+         </Tooltip>
+         </Flex>
+         </div>              
     <div>
     <div className='carta video-texto2 scrollable-card'> 
     <Tooltip title="Click para ver el grafo">
@@ -233,6 +280,7 @@ Las conexiones cercanas a nodos importantes se acortan, como si fueran líneas m
 
     
     </div>
+ 
           <div className='contenedorTablasGrafo' style={{display:displayGrafoComunidades}}>
           {/*VIDEO Y EXPLICACIÓN*/}
           <div className='video-texto2 carta scrollable-card'>
