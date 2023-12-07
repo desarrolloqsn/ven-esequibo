@@ -44,7 +44,7 @@ export default function GrafoComunidadesEnRedes() {
     setOpcionSeleccionada(value);
   };
   const nombreArchivo = `Grafo-comunidades-${opcionSeleccionada}.pdf`;
-console.log (opcionSeleccionada)
+console.log(opcionSeleccionada)
   const descargarImagen = async () => {
     const zip = new JSZip();
     // Agregar archivos al ZIP
