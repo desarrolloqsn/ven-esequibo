@@ -93,6 +93,12 @@ const rootReducer = (state = initialState, action) => {
                                     case 'FILTRAR_DATOS':
   const { filtros } = action;
 
+  console.log('Filtros:', filtros);
+  console.log('Palabras:', filtros.palabra);
+  console.log('Sin palabras:', filtros.sinpalabra);
+  console.log('Datos gráficos:', state.datosGraficos);
+
+
   let datosFiltradosNuevo = state.datosGraficos.flat();
   // console.log("DATOS",filtros.datos)
   if(filtros.datos && filtros.datos.length !== state.datosGraficos.length){
@@ -103,18 +109,18 @@ const rootReducer = (state = initialState, action) => {
     datosFiltradosNuevo = state.datosGraficos.flat();
   }
 
-  if(filtros.palabra.length === 0 && filtros.sinpalabra.length === 0){
-    // console.log("ESTOY EN ARRAY VACIO")
+  if(!filtros.palabra || !filtros.sinpalabra || (filtros.palabra.lenght ===0 && filtros.sinpalabra.lenght === 0)){
+     console.log("ESTOY EN ARRAY VACIO")
     datosFiltradosNuevo = state.datosParaFiltros;
   }
   
 
-  if (filtros.palabra.length > 0 || filtros.sinpalabra.length > 0) {
+  if ((filtros.palabra && filtros.palabra.lenght > 0) || (filtros.sinpalabras && filtros.sinpalabra.lenght > 0 )) {
     // console.log("FILTRO",filtros.palabra)
     // console.log("sinpalabra",filtros.sinpalabra)
     // console.log("datos",datosFiltradosNuevo)
     let twitsFiltrados = [] 
-    let twitsFiltrados2 = []
+    let twitsFiltrados2 = [] 
     let twitsExcluidos = []
     let contador = 0
 
@@ -123,11 +129,6 @@ const rootReducer = (state = initialState, action) => {
     } else {
       twitsFiltrados2 = state.datosGraficos.flat()
     }
-    // let palabras = filtros.palabra[0].split(",").map(palabra => palabra.toLowerCase().trim());
-    // if (palabras.length < 2){
-    //   twitsExcluidos = datosFiltradosNuevo
-    //   twitsFiltrados2 = datosFiltradosNuevo
-    // }
   
   
   
@@ -335,6 +336,7 @@ if (filtros.categoria && filtros.categoria.length > 0) {
     // Verificar si alguna categoría coincide con los tweets
     return filtros.modelo.some((modelo) => {
       // Verificar si el modelo está presente en el objeto y es un array
+      console.log ('modelo', modelo)
       if (modelo in dato && Array.isArray(dato[modelo])) {
         // Verificar si la categoría está presente en cualquier posición del array
         return dato[modelo].some((categoria) => filtros.categoria.includes(categoria));

@@ -32,15 +32,14 @@ export default function GraficoArreglado() {
 
     // Objeto para almacenar los atributos y sus valores
     const attributes = [
-      'Atributos de Personalidad',
-      'Atributos de Politicos',
+      'Atributos',
+      'Clima social',
       'Continuidad y cambio',
       'Emociones Básicas (Plutchik)',
       'Preocupaciones',
-      'Preocupaciones - Ven',
       'Red motivacional del voto',
       'Sentimientos',
-      'Voto Emocional y Racional'
+     
     ];
 
     // Objeto para almacenar los contadores de atributos por día

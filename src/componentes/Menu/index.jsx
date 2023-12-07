@@ -48,17 +48,17 @@ const MenuDesplegable = () => {
     <SubMenu icon={< AiOutlineCluster />} title="Modelos" >
 
 
-        <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Atributos de Personalidad")}>
+        <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Atributos")}>
         
-            <span>Atributo de Personalidad</span>
-            <Link to="/dashboard/Atributos de Personalidad"></Link>
+            <span>Atributos</span>
+            <Link to="/dashboard/Atributos"></Link>
         </Menu.Item>
 
 
-        <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Atributos de Politicos")}>
+        <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Clima social")}>
             
-            <span>Atributo de Políticos</span>
-            <Link to="/dashboard/Atributos de Politicos"></Link>
+            <span>Clima social</span>
+            <Link to="/dashboard/Clima social"></Link>
         </Menu.Item>
 
         <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Continuidad y cambio")}>
@@ -79,11 +79,11 @@ const MenuDesplegable = () => {
         <Link to="/dashboard/Preocupaciones"></Link>
     </Menu.Item>
 
-    <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Preocupaciones - Ven")}>
+    {/* <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Preocupaciones - Ven")}>
         
         <span>Preocupaciones - Ven</span>
         <Link to="/dashboard/Preocupaciones - Ven"></Link>
-    </Menu.Item>
+    </Menu.Item> */}
 
     <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Red motivacional del voto")}>
         
@@ -97,11 +97,11 @@ const MenuDesplegable = () => {
         <Link to="/dashboard/Sentimientos"></Link>
     </Menu.Item>
 
-    <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Voto Emocional y Racional")}>
+    {/* <Menu.Item icon={<AiOutlineCluster /> } onClick={()=>handleMenuClick("Voto Emocional y Racional")}>
         
         <span>Voto emocional y racional</span>
         <Link to="/dashboard/Voto Emocional y Racional"></Link>
-    </Menu.Item>
+    </Menu.Item> */}
 
    
 
