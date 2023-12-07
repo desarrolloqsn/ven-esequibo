@@ -43,8 +43,8 @@ export default function GrafoComunidadesEnRedes() {
     setFiltroFecha(value);
     setOpcionSeleccionada(value);
   };
-  const nombreArchivo = `Grafo-comunidades-${opcionSeleccionada}.pdf`;
-console.log(opcionSeleccionada)
+  const nombreArchivo = `Grafo-Comunidades-${opcionSeleccionada}.pdf`;
+  console.log(opcionSeleccionada)
   const descargarImagen = async () => {
     const zip = new JSZip();
     // Agregar archivos al ZIP
@@ -247,8 +247,8 @@ const opciones = fechas
      {/*FILTRO FECHAS*/}
      <div className='flex-container'>
     
-     <Select placeholder="Fechas" className='fechas-grafos' onChange={handleFiltroFechaChange} defaultValue={filtroFecha}>
-   
+     <Select className='fechas-grafos' onChange={handleFiltroFechaChange} value={filtroFecha}>
+  <option value="">Seleccione una fecha</option>
   {opciones}
 </Select>
          <Flex gap="small" wrap="wrap">
