@@ -37,33 +37,32 @@ Hashtags más utilizados en el conjunto de publicaciones o mensajes analizados. 
 // };
 
 export default function GrafoComunidadesEnRedes() {
-
   const [opcionSeleccionada, setOpcionSeleccionada] = useState('');
+
   const handleFiltroFechaChange = (value) => {
     setFiltroFecha(value);
     setOpcionSeleccionada(value);
   };
-  const nombreArchivo = `Grafo-Comunidades-${opcionSeleccionada}.pdf`;
-  console.log(opcionSeleccionada)
+
   const descargarImagen = async () => {
-    const zip = new JSZip();
-    // Agregar archivos al ZIP
-    zip.file(`${nombreArchivo}`, 'Contenido del archivo 1');
-console.log (nombreArchivo)    
 
-    // Generar el archivo ZIP
-    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const zipURL = `/grafos/Capturas-${opcionSeleccionada}.zip`;
 
-    // Crear un enlace y descargar el archivo ZIP
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(zipBlob);
-    link.download = (`${opcionSeleccionada}`,'.zip');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const response = await fetch(zipURL);
+      const blob = await response.blob();
+
+      // Crear un enlace y descargar el archivo ZIP
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Capturas-${opcionSeleccionada}.zip`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error al descargar el archivo ZIP:', error);
+    }
   };
- 
- 
  
  
   const [displayGrafoComunidades, setdisplayGrafoComunidades] = useState('noflexne');
@@ -246,11 +245,17 @@ const opciones = fechas
       
      {/*FILTRO FECHAS*/}
      <div className='flex-container'>
-    
-     <Select className='fechas-grafos' onChange={handleFiltroFechaChange} value={filtroFecha}>
-  <option value="">Seleccione una fecha</option>
-  {opciones}
-</Select>
+     {fechas.length > 1 ? (
+          <Select className='fechas-grafos' onChange={handleFiltroFechaChange} value={filtroFecha} placeholder='Seleccione una fecha'>
+            {opciones}
+          </Select>
+        ) : (
+          <Select className='fechas-grafos' onChange={handleFiltroFechaChange} value={filtroFecha} placeholder='Seleccione una fecha' onSelect={() => handleFiltroFechaChange(filtroFecha)}>
+            <Select.Option value={filtroFecha}>
+              {filtroFecha}
+            </Select.Option>
+          </Select>
+        )}
          <Flex gap="small" wrap="wrap">
          <Tooltip title="Click para descargar el grafo">
          <Button type="primary" shape="circle" icon={<DownloadOutlined />} className='download' onClick={descargarImagen} />
