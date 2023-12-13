@@ -8,13 +8,13 @@ import { Button, Tooltip } from 'antd';
 export default function OcurrenciaModelo() {
   const tweets = useSelector((state) => state.datosFiltrados);
   // console.log(tweets)
+  
   const atributos = [
     'Atributos',
     'Clima social',
     'Continuidad y cambio',
     'Emociones Básicas (Plutchik)',
     'Preocupaciones',
-    
     'Red motivacional del voto',
     'Sentimientos',
   

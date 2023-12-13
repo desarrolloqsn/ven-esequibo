@@ -195,6 +195,7 @@ export default function BarrasApiladasModelo() {
 
 
   return <div>
+
   <div className='titulo-carta'>{tweetsFiltrados.length > 0 ? "Categorias diario" : "Modelos diario"}</div>
 
    <div className='subtitulo-carta'>{tweetsFiltrados.length > 0 ? "Eventos categorizados por categorias en %" : "Eventos categorizados por modelos"}

@@ -416,7 +416,7 @@ const modeloEncontrado = categoriasModelos.find(item => item.modelo === subUrl);
 // Obtener la lista de categorías del modelo
 const categorias = modeloEncontrado ? modeloEncontrado.categorias : [];
 
-console.log ('categorias', categorias)
+// console.log ('categorias', categorias)
 
 
 const selectProps = {

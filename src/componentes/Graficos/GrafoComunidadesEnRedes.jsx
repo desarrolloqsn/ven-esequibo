@@ -45,9 +45,9 @@ export default function GrafoComunidadesEnRedes() {
   };
 
   const descargarImagen = async () => {
-
+console.log(opcionSeleccionada)
     const zipURL = `/grafos/Capturas-${opcionSeleccionada}.zip`;
-
+     console.log(zipURL)
     try {
       const response = await fetch(zipURL);
       const blob = await response.blob();
@@ -245,17 +245,28 @@ const opciones = fechas
       
      {/*FILTRO FECHAS*/}
      <div className='flex-container'>
-     {fechas.length > 1 ? (
-          <Select className='fechas-grafos' onChange={handleFiltroFechaChange} value={filtroFecha} placeholder='Seleccione una fecha'>
-            {opciones}
-          </Select>
-        ) : (
-          <Select className='fechas-grafos' onChange={handleFiltroFechaChange} value={filtroFecha} placeholder='Seleccione una fecha' onSelect={() => handleFiltroFechaChange(filtroFecha)}>
-            <Select.Option value={filtroFecha}>
-              {filtroFecha}
-            </Select.Option>
-          </Select>
-        )}
+     {opciones.length > 1 ? (
+        <Select
+          className='fechas-grafos'
+          onChange={handleFiltroFechaChange}
+          value={filtroFecha}
+          placeholder='Seleccione una fecha'
+        >
+          {opciones}
+        </Select>
+      ) : (
+        <Select
+          className='fechas-grafos'
+          onChange={handleFiltroFechaChange}
+          value={filtroFecha}
+          placeholder='Seleccione una fecha'
+          onSelect={() => handleFiltroFechaChange(filtroFecha)}
+        >
+          <Select.Option value=''>
+            {filtroFecha}
+          </Select.Option>
+        </Select>
+      )}
          <Flex gap="small" wrap="wrap">
          <Tooltip title="Click para descargar el grafo">
          <Button type="primary" shape="circle" icon={<DownloadOutlined />} className='download' onClick={descargarImagen} />
